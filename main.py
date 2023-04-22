@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+app.app_context().push()
 
 
 ##Cafe TABLE Configuration
@@ -24,19 +25,22 @@ class Cafe(db.Model):
     can_take_calls = db.Column(db.Boolean, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=True)
 
+def create_dict(query):
+    #Pass in query in return dictionary
+    pass
 
+db.create_all()
 @app.route("/")
 def home():
     return render_template("index.html")
     
 
 ## HTTP GET - Read Record
-@app.route("/random", methods=["GET"])
-def random():
-    if request.method == "GET":
-        cafes = db.session.query(Cafe).all()
-        cafe = random.choice(cafes)
-
+@app.route("/random")
+def get_random_cafe():
+    cafes = db.session.query(Cafe).all()
+    cafe = random.choice(cafes)
+    print(cafe)
 
 
 
