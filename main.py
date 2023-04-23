@@ -27,7 +27,21 @@ class Cafe(db.Model):
 
 def create_dict(query):
     #Pass in query in return dictionary
-    pass
+    to_return = {
+        "id":query.id,
+        "name":query.name,
+        "map_url": query.map_url,
+        "img_url": query.img_url,
+        "location": query.location,
+        "seats": query.seats,
+        "has_toilet": query.has_toilet,
+        "has_wifi": query.has_wifi,
+        "has_sockets": query.has_sockets,
+        "can_take_calls": query.can_take_calls,
+        "coffee_price": query.coffee_price
+    }
+
+    return to_return
 
 db.create_all()
 @app.route("/")
@@ -40,8 +54,8 @@ def home():
 def get_random_cafe():
     cafes = db.session.query(Cafe).all()
     cafe = random.choice(cafes)
-    print(cafe)
-
+    cafe_details = create_dict(cafe)
+    return jsonify(cafe_details)
 
 
 ## HTTP POST - Create Record
