@@ -57,6 +57,15 @@ def get_random_cafe():
     cafe_details = create_dict(cafe)
     return jsonify(cafe_details)
 
+@app.route("/all", methods=["GET"])
+def all():
+    cafes = db.session.query(Cafe).all()
+    cafes_1 = {"cafes":[]}
+
+    for i in cafes:
+        cafes_1["cafes"].append(create_dict(i))
+    print(cafes_1)
+    return jsonify(cafes_1)
 
 ## HTTP POST - Create Record
 
