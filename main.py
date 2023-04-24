@@ -67,6 +67,27 @@ def all():
     print(cafes_1)
     return jsonify(cafes_1)
 
+@app.route("/search", methods=["GET"])
+def search():
+    location = request.args['location']
+    cafes = db.session.query(Cafe).all()
+
+    cafes_1 = {}
+
+    for i in cafes:
+        if i.location == location.title():
+            cafes_1["cafes"] = []
+            cafes_1['cafes'].append(create_dict(i))
+
+    if cafes_1 == {}:
+        cafes_1['error'] = {"Not Found": "Sorry, we don't have a cafe at that location."}
+
+    return jsonify(cafes_1)
+
+
+
+
+
 ## HTTP POST - Create Record
 
 ## HTTP PUT/PATCH - Update Record
