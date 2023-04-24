@@ -70,19 +70,25 @@ def all():
 @app.route("/search", methods=["GET"])
 def search():
     location = request.args['location']
-    cafes = db.session.query(Cafe).all()
+    cafes = db.session.query(Cafe).filter_by(location=location).first()
 
-    cafes_1 = {}
+    if cafes == None:
+        return(jsonify({"Error": {"Not Found": "Sorry, we don't have a cafe at that location."}}))
 
-    for i in cafes:
-        if i.location == location.title():
-            cafes_1["cafes"] = []
-            cafes_1['cafes'].append(create_dict(i))
+    else:
+        return jsonify(create_dict(cafes))
 
-    if cafes_1 == {}:
-        cafes_1['error'] = {"Not Found": "Sorry, we don't have a cafe at that location."}
-
-    return jsonify(cafes_1)
+    # cafes_1 = {}
+    #
+    # for i in cafes:
+    #     if i.location == location.title():
+    #         cafes_1["cafes"] = []
+    #         cafes_1['cafes'].append(create_dict(i))
+    #
+    # if cafes_1 == {}:
+    #     cafes_1['error'] = {"Not Found": "Sorry, we don't have a cafe at that location."}
+    #
+    # return jsonify(cafes_1)
 
 
 
