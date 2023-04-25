@@ -66,14 +66,16 @@ def all():
         cafes_1["cafes"].append(create_dict(i))
     print(cafes_1)
     return jsonify(cafes_1)
-
 @app.route("/search", methods=["GET"])
 def search():
     location = request.args['location']
     cafes = db.session.query(Cafe).filter_by(location=location).first()
 
     if cafes == None:
-        return(jsonify({"Error": {"Not Found": "Sorry, we don't have a cafe at that location."}}))
+
+        return(
+            jsonify({"Error": {"Not Found": "Sorry, we don't have a cafe at that location."}})
+        )
 
     else:
         return jsonify(create_dict(cafes))
